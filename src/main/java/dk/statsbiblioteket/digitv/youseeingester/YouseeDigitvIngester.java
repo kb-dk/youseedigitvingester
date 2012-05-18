@@ -1,4 +1,4 @@
-package dk.statsbiblioteket.doms.yousee;
+package dk.statsbiblioteket.digitv.youseeingester;
 
 import dk.statsbiblioteket.util.Files;
 import org.apache.commons.cli.*;
@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 
-public class YouseeIngesterCLI {
+public class YouseeDigitvIngester {
 
     private static Options options;
 
