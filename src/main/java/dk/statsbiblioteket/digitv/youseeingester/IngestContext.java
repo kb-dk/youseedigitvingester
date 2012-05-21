@@ -1,5 +1,8 @@
 package dk.statsbiblioteket.digitv.youseeingester;
 
+/**
+ * @author jrg
+ */
 public class IngestContext {
     private String filename;
     private String starttime;

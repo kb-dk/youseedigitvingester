@@ -1,6 +1,8 @@
 package dk.statsbiblioteket.digitv.youseeingester;
 
-
+/**
+ * @author jrg
+ */
 public class YouseeDigitvIngesterTest {
     @org.junit.Test
     public void testMain() throws Exception {

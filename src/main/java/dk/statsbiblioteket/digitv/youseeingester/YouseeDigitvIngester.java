@@ -6,6 +6,9 @@ import org.apache.commons.cli.*;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * @author jrg
+ */
 public class YouseeDigitvIngester {
     private static Options options;
 
@@ -83,7 +86,7 @@ public class YouseeDigitvIngester {
 
 
         String output = "{"
-                + "   id : \"<en id>\""
+                + "   \"id\" : \"<en id>\""
                 + ""
                 + ""
                 + ""
