@@ -1,19 +1,17 @@
 <assembly>
-	
+
+    <id>bundle</id>
     <formats>
         <format>zip</format>
     </formats>
-	<includeBaseDirectory>false</includeBaseDirectory>
-    <fileSets>
+    <includeBaseDirectory>false</includeBaseDirectory>
 
-
-        <fileSet>
-            <outputDirectory></outputDirectory>
-            <directory>src/main/scripts</directory>
-        </fileSet>
-     
-    </fileSets>
-
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory/>
+            <useTransitiveFiltering>true</useTransitiveFiltering>
+        </dependencySet>
+    </dependencySets>
 
 
 </assembly>

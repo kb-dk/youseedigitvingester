@@ -8,6 +8,7 @@ public class IngestContext {
     private String starttime;
     private String stoptime;
     private String channelid;
+    private String config;
 
     public IngestContext() {
     }
@@ -28,6 +29,10 @@ public class IngestContext {
         this.channelid = channelid;
     }
 
+    public void setConfig(String config) {
+        this.config = config;
+    }
+
     public String getFilename() {
         return filename;
     }
@@ -43,4 +48,9 @@ public class IngestContext {
     public String getChannelid() {
         return channelid;
     }
+
+    public String getConfig() {
+        return config;
+    }
+
 }

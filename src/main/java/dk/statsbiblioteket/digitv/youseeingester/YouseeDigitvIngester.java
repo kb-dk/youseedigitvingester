@@ -2,6 +2,11 @@ package dk.statsbiblioteket.digitv.youseeingester;
 
 import dk.statsbiblioteket.util.Files;
 import org.apache.commons.cli.*;
+import org.apache.log4j.xml.SAXErrorHandler;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.Properties;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +25,8 @@ public class YouseeDigitvIngester {
             "The recording stop time of the file");
     private static final Option CHANNELID_OPTION = new Option("channelid", true,
             "The recording channel ID of the file");
+    private static final Option CONFIG_OPTION = new Option("config", true,
+            "The config file for the YouSee DigiTV Ingester");
 
     static {
         options = new Options();
@@ -27,6 +34,7 @@ public class YouseeDigitvIngester {
         options.addOption(STARTTIME_OPTION);
         options.addOption(STOPTIME_OPTION);
         options.addOption(CHANNELID_OPTION);
+        options.addOption(CONFIG_OPTION);
         for (Object option : options.getOptions()) {
             if (option instanceof Option) {
                 Option option1 = (Option) option;
@@ -84,18 +92,49 @@ public class YouseeDigitvIngester {
         }
         context.setChannelid(channelid);
 
+        String config = cmd.getOptionValue(CONFIG_OPTION.getOpt());
+        if (config == null){
+            parseError(CONFIG_OPTION.toString());
+            return;
+        }
+        context.setConfig(config);
 
-        String output = "{"
-                + "   \"id\" : \"<en id>\""
-                + ""
-                + ""
-                + ""
-                + ""
-                + ""
-                + ""
-                + "}";
+        // Get properties
+        String filenameAndPath = context.getConfig();
+        Properties properties = null;
+        try {
+            properties = getPropertiesFromPropertyFile(filenameAndPath);
+        } catch (Exception e) {
+            System.err.println("Could not load config file from path: "
+                    + filenameAndPath);
+            exit(13);
+        }
+        // TODO Set options anything gotten from the config file
+
+
+        // Do the actual ingesting
+        String output = insertDataIntoDigitvDatabase(context);
+
         System.out.println(output);
         exit(0);
+    }
+
+    private static String insertDataIntoDigitvDatabase(IngestContext context) {
+        String output;
+
+        // TODO implement...
+
+        output = "{"
+                + "   \"id\" : \"<en id>\""     // TODO insert real value
+                + "}";
+        return output;
+    }
+
+    private static Properties getPropertiesFromPropertyFile(
+            String filenameAndPath) throws FileNotFoundException, IOException {
+        Properties properties = new Properties();
+        properties.load(new FileInputStream(filenameAndPath));
+        return properties;
     }
 
     private static void parseError(String message){
