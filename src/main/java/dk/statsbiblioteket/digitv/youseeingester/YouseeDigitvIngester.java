@@ -109,7 +109,7 @@ public class YouseeDigitvIngester {
                     + filenameAndPath);
             exit(13);
         }
-        // TODO Set options anything gotten from the config file
+        // TODO Set options for anything gotten from the config file
 
 
         // Do the actual ingesting
