@@ -17,7 +17,9 @@ public class RecordedFileDAO extends GenericHibernateDAO<RecordedFile, Long>
     }
 
     /**
-     * TODO ........
+     * Overrides create() to allow create to ingest a file already in the
+     * database. The create() method will now overwrite the old entry in the
+     * database with the new.
      * @param o
      * @return
      */
