@@ -10,7 +10,7 @@
 
     <groupId>dk.statsbiblioteket.digitv.youseeingester</groupId>
     <artifactId>YouseeDigitvIngester</artifactId>
-    <version>0.2.0-SNAPSHOT</version>
+    <version>0.2.0</version>
     <name>YouSee DigiTV Ingester</name>
     <description>Ingests recording-file info into DigiTV database</description>
 
@@ -43,8 +43,8 @@
         </dependency>
         <dependency>
             <groupId>dk.statsbiblioteket.mediaplatform</groupId>
-            <artifactId>channelarchivingrequester-core</artifactId>
-            <version>0.2-SNAPSHOT</version>
+            <artifactId>channelarchivingrequester</artifactId>
+            <version>0.1.2</version>
         </dependency>
         <dependency>
             <groupId>commons-cli</groupId>
