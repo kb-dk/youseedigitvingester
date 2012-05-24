@@ -8,7 +8,6 @@ import org.apache.commons.cli.*;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -157,8 +156,9 @@ public class YouseeDigitvIngester {
             start_date = df.parse(context.getStarttime());
             stop_date = df.parse(context.getStoptime());
             channel_id = context.getChannelid();
-        } catch (Exception e) {
-            System.err.println("Could not parse data in config file");
+        } catch (java.text.ParseException e) {
+            System.err.println("Could not parse date");
+            e.printStackTrace(System.err);
             exit(13);
         }
 
