@@ -1,14 +1,19 @@
 package dk.statsbiblioteket.digitv.youseeingester;
 
-import dk.statsbiblioteket.util.Files;
+import dk.statsbiblioteket.digitv.youseeingester.model.RecordedFile;
+import dk.statsbiblioteket.digitv.youseeingester.model.persistence.RecordedFileDAO;
+import dk.statsbiblioteket.digitv.youseeingester.model.persistence.YouseeDigitvIngesterHibernateUtil;
+import dk.statsbiblioteket.mediaplatform.ingest.model.persistence.HibernateUtilIF;
 import org.apache.commons.cli.*;
-import org.apache.log4j.xml.SAXErrorHandler;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.Properties;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Properties;
+
 import java.io.IOException;
 
 /**
@@ -109,29 +114,66 @@ public class YouseeDigitvIngester {
                     + filenameAndPath);
             exit(13);
         }
-        // TODO Set options for anything gotten from the config file
 
+        String pathToHibernateConfigFile = "";
+        if (properties == null) {
+            System.err.println("Could not load config file from path: "
+                    + filenameAndPath);
+            exit(13);
+        } else {
+            try {
+                pathToHibernateConfigFile
+                        = properties.getProperty("hibernate.config.file.path");
+            } catch (Exception e) {
+                System.err.println("Missing data in config file");
+                exit(13);
+            }
+        }
 
         // Do the actual ingesting
-        String output = insertDataIntoDigitvDatabase(context);
+        String output = insertDataIntoDigitvDatabase(context,
+                pathToHibernateConfigFile);
 
         System.out.println(output);
         exit(0);
     }
 
-    private static String insertDataIntoDigitvDatabase(IngestContext context) {
+    private static String insertDataIntoDigitvDatabase(IngestContext context,
+                                                       String pathToHibernateConfigFile) {
         String output;
 
-        // TODO implement...
+        File cfgFile = new File(pathToHibernateConfigFile);
+        HibernateUtilIF util = YouseeDigitvIngesterHibernateUtil.initialiseFactory(cfgFile);
+
+        RecordedFileDAO recordedFileDAO = new RecordedFileDAO(util);
+
+        String filename = "";
+        Date start_date = null;
+        Date stop_date = null;
+        String channel_id = "";
+        try {
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            filename = context.getFilename();
+            start_date = df.parse(context.getStarttime());
+            stop_date = df.parse(context.getStoptime());
+            channel_id = context.getChannelid();
+        } catch (Exception e) {
+            System.err.println("Could not parse data in config file");
+            exit(13);
+        }
+
+        RecordedFile recordedFile = new RecordedFile(filename, start_date,
+                stop_date, channel_id);
+        Long returnedId = recordedFileDAO.create(recordedFile);
 
         output = "{"
-                + "   \"id\" : \"<en id>\""     // TODO insert real value
+                + "   \"id\" : \"" + returnedId + "\""
                 + "}";
         return output;
     }
 
     private static Properties getPropertiesFromPropertyFile(
-            String filenameAndPath) throws FileNotFoundException, IOException {
+            String filenameAndPath) throws IOException {
         Properties properties = new Properties();
         properties.load(new FileInputStream(filenameAndPath));
         return properties;

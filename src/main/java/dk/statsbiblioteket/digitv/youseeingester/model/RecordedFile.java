@@ -70,49 +70,6 @@ public class RecordedFile {
         this.channel_id = channel_id;
     }
 
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        RecordedFile file = (RecordedFile) o;
-
-        if (Id != null ? !Id.equals(file.Id) : file.Id != null) {
-            return false;
-        }
-        if (filename != null ? !filename.equals(file.filename)
-                : file.filename != null) {
-            return false;
-        }
-        if (start_date != null ? !start_date.equals(file.start_date)
-                : file.start_date != null) {
-            return false;
-        }
-        if (stop_date != null ? !stop_date.equals(file.stop_date)
-                : file.stop_date != null) {
-            return false;
-        }
-        if (channel_id != null ? !channel_id.equals(file.channel_id)
-                : file.channel_id != null) {
-            return false;
-        }
-
-        return true;
-    }
-
-    public int hashCode() {
-        int result;
-        result = (Id != null ? Id.hashCode() : 0);
-        result = 31 * result + (filename != null ? filename.hashCode() : 0);
-        result = 31 * result + (start_date != null ? start_date.hashCode() : 0);
-        result = 31 * result + (stop_date != null ? stop_date.hashCode() : 0);
-        result = 31 * result + (channel_id != null ? channel_id.hashCode() : 0);
-        return result;
-    }
-
     public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("RecordedFile (" + Id +  "): ");
