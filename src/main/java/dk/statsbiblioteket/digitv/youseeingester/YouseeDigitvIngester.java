@@ -7,6 +7,7 @@ import dk.statsbiblioteket.mediaplatform.ingest.model.persistence.HibernateUtilI
 import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.apache.log4j.xml.DOMConfigurator;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -56,7 +57,20 @@ public class YouseeDigitvIngester {
         usageFormatter.printHelp("youseeDigitvIngester", options, true);
     }
 
-
+    /**
+     * Main method for ingesting a single file into the digitv system. Parameters (all compulsory) are
+     * -filename  the name of the file
+     * -starttime the starttime in yyyyMMddHHmmss format
+     * -stoptime  the stoptime in yyyyMMddHHmmss format
+     * -channelid the name of the channel
+     * -config the path to the configuration file (absolute or relativ to current working directory)
+     *
+     * The configuration file contains the parameters
+     * hibernate.config.file.path the path to the hibernate configuration file
+     * log4j.config.file.path the path to the log4j configuration file
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         CommandLineParser parser = new PosixParser();
         CommandLine cmd;
@@ -107,7 +121,7 @@ public class YouseeDigitvIngester {
             System.err.println("Could not load log4j config from " + log4jFile.getAbsolutePath());
             exit(13);
         }
-        PropertyConfigurator.configure(pathToLog4jConfig);
+        DOMConfigurator.configure(pathToLog4jConfig);
         //From here on can assume there is a log4j configuration
         Logger log = Logger.getLogger(YouseeDigitvIngester.class);
         log.info("Loaded log4j configuration from " + log4jFile.getAbsolutePath());
