@@ -5,6 +5,8 @@ import dk.statsbiblioteket.digitv.youseeingester.model.persistence.RecordedFileD
 import dk.statsbiblioteket.digitv.youseeingester.model.persistence.YouseeDigitvIngesterHibernateUtil;
 import dk.statsbiblioteket.mediaplatform.ingest.model.persistence.HibernateUtilIF;
 import org.apache.commons.cli.*;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -67,35 +69,8 @@ public class YouseeDigitvIngester {
             return;
         }
 
-        // Get each parameter
-        String filename = cmd.getOptionValue(FILENAME_OPTION.getOpt());
-        if (filename == null){
-            parseError(FILENAME_OPTION.toString());
-            return;
-        }
-        context.setFilename(filename);
 
-        String starttime = cmd.getOptionValue(STARTTIME_OPTION.getOpt());
-        if (starttime == null){
-            parseError(STARTTIME_OPTION.toString());
-            return;
-        }
-        context.setStarttime(starttime);
-
-        String stoptime = cmd.getOptionValue(STOPTIME_OPTION.getOpt());
-        if (stoptime == null){
-            parseError(STOPTIME_OPTION.toString());
-            return;
-        }
-        context.setStoptime(stoptime);
-
-        String channelid = cmd.getOptionValue(CHANNELID_OPTION.getOpt());
-        if (channelid == null){
-            parseError(CHANNELID_OPTION.toString());
-            return;
-        }
-        context.setChannelid(channelid);
-
+         // Get properties
         String config = cmd.getOptionValue(CONFIG_OPTION.getOpt());
         if (config == null){
             parseError(CONFIG_OPTION.toString());
@@ -103,7 +78,6 @@ public class YouseeDigitvIngester {
         }
         context.setConfig(config);
 
-        // Get properties
         String filenameAndPath = context.getConfig();
         Properties properties = null;
         try {
@@ -113,6 +87,30 @@ public class YouseeDigitvIngester {
                     + filenameAndPath);
             exit(13);
         }
+
+        String pathToLog4jConfig = null;
+        if (properties == null) {
+            System.err.println("Could not load config file from path: "
+                    + filenameAndPath);
+            exit(13);
+        } else {
+            try {
+                pathToLog4jConfig
+                        = properties.getProperty("log4j.config.file.path");
+            } catch (Exception e) {
+                System.err.println("Missing path to log4 config in config file");
+                exit(13);
+            }
+        }
+        File log4jFile = new File(pathToLog4jConfig);
+        if (!log4jFile.exists()) {
+            System.err.println("Could not load log4j config from " + log4jFile.getAbsolutePath());
+            exit(13);
+        }
+        PropertyConfigurator.configure(pathToLog4jConfig);
+        //From here on can assume there is a log4j configuration
+        Logger log = Logger.getLogger(YouseeDigitvIngester.class);
+        log.info("Loaded log4j configuration from " + log4jFile.getAbsolutePath());
 
         String pathToHibernateConfigFile = "";
         if (properties == null) {
@@ -124,21 +122,60 @@ public class YouseeDigitvIngester {
                 pathToHibernateConfigFile
                         = properties.getProperty("hibernate.config.file.path");
             } catch (Exception e) {
+                log.error("Missing hibernate configuration in config file");
                 System.err.println("Missing data in config file");
                 exit(13);
             }
         }
+        log.info("Loaded hibernate configuration from " + pathToHibernateConfigFile);
+        // Get each parameter
+        String filename = cmd.getOptionValue(FILENAME_OPTION.getOpt());
+        if (filename == null){
+            parseError(FILENAME_OPTION.toString());
+            return;
+        }
+        context.setFilename(filename);
+        log.info("Started ingest of " + filename);
+
+        String starttime = cmd.getOptionValue(STARTTIME_OPTION.getOpt());
+        if (starttime == null){
+            parseError(STARTTIME_OPTION.toString());
+            return;
+        }
+        context.setStarttime(starttime);
+        log.info("Start time: " + starttime);
+
+        String stoptime = cmd.getOptionValue(STOPTIME_OPTION.getOpt());
+        if (stoptime == null){
+            parseError(STOPTIME_OPTION.toString());
+            return;
+        }
+        context.setStoptime(stoptime);
+        log.info("Stop time: " + stoptime);
+
+        String channelid = cmd.getOptionValue(CHANNELID_OPTION.getOpt());
+        if (channelid == null){
+            parseError(CHANNELID_OPTION.toString());
+            return;
+        }
+        context.setChannelid(channelid);
+        log.info("Channel id: " + channelid);
+
+
+
 
         // Do the actual ingesting
         String output = insertDataIntoDigitvDatabase(context,
                 pathToHibernateConfigFile);
 
         System.out.println(output);
-        exit(0);
+        //exit(0);
     }
 
     private static String insertDataIntoDigitvDatabase(IngestContext context,
                                                        String pathToHibernateConfigFile) {
+        Logger log = Logger.getLogger(YouseeDigitvIngester.class);
+
         String output;
 
         File cfgFile = new File(pathToHibernateConfigFile);
@@ -157,6 +194,7 @@ public class YouseeDigitvIngester {
             stop_date = df.parse(context.getStoptime());
             channel_id = context.getChannelid();
         } catch (java.text.ParseException e) {
+            log.error("Could not parse date", e);
             System.err.println("Could not parse date");
             e.printStackTrace(System.err);
             exit(13);
@@ -165,7 +203,7 @@ public class YouseeDigitvIngester {
         RecordedFile recordedFile = new RecordedFile(filename, start_date,
                 stop_date, channel_id);
         Long returnedId = recordedFileDAO.create(recordedFile);
-
+        log.info("Ingested " + filename + " to id " + returnedId);
         output = "{"
                 + "   \"id\" : \"" + returnedId + "\""
                 + "}";

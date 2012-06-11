@@ -14,7 +14,7 @@ import java.util.Date;
  */
 public class YouseeDigitvIngesterTest extends TestCase {
     @org.junit.Test
-    public void testMain()  throws Exception {
+    public void testPersistence()  throws Exception {
         /*YouseeDigitvIngester.main(new String[]{
                 "-filename","testfile.mux",
                 "-starttime","10",
@@ -54,4 +54,16 @@ public class YouseeDigitvIngesterTest extends TestCase {
 
         assertNotSame(firstReturnedId, secondReturnedId);
     }
+
+   @org.junit.Test
+   public void testMain() {
+      YouseeDigitvIngester.main(new String[]{
+                "-filename","testfile.mux",
+                "-starttime","20120512120000",
+                "-stoptime","20120512130000",
+                "-channelid","dr1",
+                "-config","src/test/resources/ingester.properties"
+        });
+   }
+
 }
