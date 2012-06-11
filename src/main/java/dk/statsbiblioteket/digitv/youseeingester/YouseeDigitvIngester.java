@@ -116,6 +116,7 @@ public class YouseeDigitvIngester {
                 exit(13);
             }
         }
+
         File log4jFile = new File(pathToLog4jConfig);
         if (!log4jFile.exists()) {
             System.err.println("Could not load log4j config from " + log4jFile.getAbsolutePath());
