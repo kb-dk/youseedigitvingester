@@ -8,16 +8,16 @@
     </parent>
 
 
-    <groupId>dk.statsbiblioteket.digitv.youseeingester</groupId>
-    <artifactId>YouseeDigitvIngester</artifactId>
+    <groupId>dk.statsbiblioteket.medieplatform</groupId>
+    <artifactId>yousee-digitv-ingester</artifactId>
     <version>0.3.1-SNAPSHOT</version>
-    <name>YouSee DigiTV Ingester</name>
+    <name>Yousee Digitv Ingester</name>
     <description>Ingests recording-file info into DigiTV database</description>
 
     <scm>
-        <connection>scm:git:git://github.com/statsbiblioteket/yousee-digitv-ingester.git</connection>
-        <url>scm:git:git://github.com/statsbiblioteket/yousee-digitv-ingester.git</url>
-        <developerConnection>scm:git:git://github.com/statsbiblioteket/yousee-digitv-ingester.git</developerConnection>
+        <connection>scm:git:git://github.com/statsbiblioteket/youseedigitvingester.git</connection>
+        <url>scm:git:git://github.com/statsbiblioteket/youseedigitvingester.git</url>
+        <developerConnection>scm:git:git://github.com/statsbiblioteket/youseedigitvingester.git</developerConnection>
     </scm>
 
 
@@ -42,9 +42,9 @@
             <version>1.2.0</version>
         </dependency>
         <dependency>
-            <groupId>dk.statsbiblioteket.mediaplatform</groupId>
-            <artifactId>channelarchivingrequester</artifactId>
-            <version>0.1.2</version>
+            <groupId>dk.statsbiblioteket.medieplatform</groupId>
+            <artifactId>yousee-channel-archiving-requester-core</artifactId>
+            <version>1.1.2</version>
         </dependency>
         <dependency>
             <groupId>commons-cli</groupId>

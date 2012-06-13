@@ -120,7 +120,8 @@ public class YouseeDigitvIngester {
         File log4jFile = new File(pathToLog4jConfig);
         if (!log4jFile.exists()) {
             System.err.println("Could not load log4j config from " + log4jFile.getAbsolutePath());
-            exit(13);
+            exit(13);                                                                                                                                         System.err.println("Loading log4j config from " + pathToLog4jConfig + " corresponding to " + log4jFile.getAbsolutePath());
+
         }
         DOMConfigurator.configure(pathToLog4jConfig);
         //From here on can assume there is a log4j configuration
