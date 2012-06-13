@@ -10,14 +10,14 @@
 
     <groupId>dk.statsbiblioteket.medieplatform</groupId>
     <artifactId>yousee-digitv-ingester</artifactId>
-    <version>0.3.1</version>
+    <version>0.3.1-SNAPSHOT</version>
     <name>Yousee Digitv Ingester</name>
     <description>Ingests recording-file info into DigiTV database</description>
 
     <scm>
-        <connection>scm:git:git@github.com:statsbiblioteket/youseedigitvingester.git</connection>
-        <url>https://github.com/statsbiblioteket/youseedigitvingester</url>
-        <developerConnection>scm:git:git@github.com:statsbiblioteket/youseedigitvingester.git</developerConnection>
+        <connection>scm:git:git://github.com/statsbiblioteket/youseedigitvingester.git</connection>
+        <url>scm:git:git://github.com/statsbiblioteket/youseedigitvingester.git</url>
+        <developerConnection>scm:git:git://github.com/statsbiblioteket/youseedigitvingester.git</developerConnection>
     </scm>
 
 
