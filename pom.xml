@@ -15,8 +15,8 @@
     <description>Ingests recording-file info into DigiTV database</description>
 
     <scm>
-        <connection>scm:git:git@github.com:statsbiblioteket/youseedigitvingester.git</connection>
         <url>https://github.com/statsbiblioteket/youseedigitvingester</url>
+        <connection>scm:git:git@github.com:statsbiblioteket/youseedigitvingester.git</connection>
         <developerConnection>scm:git:git@github.com:statsbiblioteket/youseedigitvingester.git</developerConnection>
     </scm>
 
