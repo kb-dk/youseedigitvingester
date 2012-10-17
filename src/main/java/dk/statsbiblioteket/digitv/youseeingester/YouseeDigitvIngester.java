@@ -204,7 +204,7 @@ public class YouseeDigitvIngester {
         Date stop_date = null;
         String channel_id = "";
         try {
-            DateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+            DateFormat df = new SimpleDateFormat("yyyyMMdd'T'HHmmssZ");
             filename = context.getFilename();
             start_date = df.parse(context.getStarttime());
             stop_date = df.parse(context.getStoptime());
