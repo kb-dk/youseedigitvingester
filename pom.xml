@@ -10,7 +10,7 @@
 
     <groupId>dk.statsbiblioteket.medieplatform</groupId>
     <artifactId>yousee-digitv-ingester</artifactId>
-    <version>0.3.3</version>
+    <version>0.3.4-SNAPSHOT</version>
     <name>Yousee Digitv Ingester</name>
     <description>Ingests recording-file info into DigiTV database</description>
 
