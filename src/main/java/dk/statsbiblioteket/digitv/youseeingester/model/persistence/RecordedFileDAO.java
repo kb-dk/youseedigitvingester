@@ -3,6 +3,7 @@ package dk.statsbiblioteket.digitv.youseeingester.model.persistence;
 import dk.statsbiblioteket.digitv.youseeingester.model.RecordedFile;
 import dk.statsbiblioteket.mediaplatform.ingest.model.persistence.GenericHibernateDAO;
 import dk.statsbiblioteket.mediaplatform.ingest.model.persistence.HibernateUtilIF;
+import org.hibernate.Session;
 
 import java.util.Date;
 import java.util.List;
@@ -41,15 +42,23 @@ public class RecordedFileDAO extends GenericHibernateDAO<RecordedFile, Long>
 
 
     public RecordedFile getRecordedFileByFilename(String filename) {
-        List<RecordedFile> recordedFiles = (List<RecordedFile>) getSession().createQuery(
-                "from RecordedFile "
-                        + "where filename = :filename")
-                .setParameter("filename", filename)
-                .list();
-        if (recordedFiles == null || recordedFiles.isEmpty()) {
-            return null;
-        } else {
-            return recordedFiles.get(0);
+        Session session = null;
+        try {
+            session = getSession();
+            List<RecordedFile> recordedFiles = (List<RecordedFile>) session.createQuery(
+                    "from RecordedFile "
+                            + "where filename = :filename")
+                    .setParameter("filename", filename)
+                    .list();
+            if (recordedFiles == null || recordedFiles.isEmpty()) {
+                return null;
+            } else {
+                return recordedFiles.get(0);
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 
