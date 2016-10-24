@@ -1,11 +1,12 @@
 package dk.statsbiblioteket.digitv.youseeingester.model.persistence;
 
-import dk.statsbiblioteket.digitv.youseeingester.model.RecordedFile;
-import dk.statsbiblioteket.mediaplatform.ingest.model.persistence.HibernateUtilIF;
-import dk.statsbiblioteket.mediaplatform.ingest.model.persistence.NotInitialiasedException;
+import dk.statsbiblioteket.digitaltv.utils.constants.PropertyNames;
+import dk.statsbiblioteket.digitv.persistence.HibernateUtilIF;
+import dk.statsbiblioteket.digitv.persistence.NotInitialiasedException;
+import dk.statsbiblioteket.digitv.persistence.recordedfile.RecordedFile;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.cfg.Configuration;
 
 import java.io.File;
 
@@ -37,7 +38,7 @@ public class YouseeDigitvIngesterHibernateUtil implements HibernateUtilIF {
         if (sessionFactory == null || sessionFactory.isClosed()) {
             try {
                 if (sessionFactory == null) {
-                    AnnotationConfiguration configure = (new AnnotationConfiguration()).configure(cfgFile);
+                    Configuration configure = (new Configuration()).configure(cfgFile);
                     configure.addAnnotatedClass(RecordedFile.class);
                     sessionFactory = configure.buildSessionFactory();
                 }

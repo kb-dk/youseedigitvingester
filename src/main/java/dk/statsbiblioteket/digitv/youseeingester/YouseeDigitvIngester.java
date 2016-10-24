@@ -1,12 +1,12 @@
 package dk.statsbiblioteket.digitv.youseeingester;
 
-import dk.statsbiblioteket.digitv.youseeingester.model.RecordedFile;
-import dk.statsbiblioteket.digitv.youseeingester.model.persistence.RecordedFileDAO;
+import dk.statsbiblioteket.digitv.persistence.HibernateUtilIF;
+import dk.statsbiblioteket.digitv.persistence.recordedfile.RecordedFile;
+import dk.statsbiblioteket.digitv.persistence.recordedfile.RecordedFileDAO;
+import dk.statsbiblioteket.digitv.persistence.sbchannel.SBChannel;
 import dk.statsbiblioteket.digitv.youseeingester.model.persistence.YouseeDigitvIngesterHibernateUtil;
-import dk.statsbiblioteket.mediaplatform.ingest.model.persistence.HibernateUtilIF;
 import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.xml.DOMConfigurator;
 
 import java.io.File;
@@ -202,13 +202,13 @@ public class YouseeDigitvIngester {
         String filename = "";
         Date start_date = null;
         Date stop_date = null;
-        String channel_id = "";
+        SBChannel channel_id = SBChannel.fromID("");
         try {
             DateFormat df = new SimpleDateFormat("yyyyMMdd'T'HHmmssZ");
             filename = context.getFilename();
             start_date = df.parse(context.getStarttime());
             stop_date = df.parse(context.getStoptime());
-            channel_id = context.getChannelid();
+            channel_id = SBChannel.fromID(context.getChannelid());
         } catch (java.text.ParseException e) {
             log.error("Could not parse date", e);
             System.err.println("Could not parse date");
@@ -217,7 +217,7 @@ public class YouseeDigitvIngester {
         }
 
         RecordedFile recordedFile = new RecordedFile(filename, start_date,
-                stop_date, channel_id);
+                                                     stop_date, channel_id);
         Long returnedId = recordedFileDAO.create(recordedFile);
         log.info("Ingested " + filename + " to id " + returnedId);
         output = "{"
