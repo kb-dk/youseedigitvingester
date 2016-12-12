@@ -6,8 +6,9 @@ import dk.statsbiblioteket.digitv.persistence.recordedfile.RecordedFileDAO;
 import dk.statsbiblioteket.digitv.persistence.sbchannel.SBChannel;
 import dk.statsbiblioteket.digitv.youseeingester.model.persistence.YouseeDigitvIngesterHibernateUtil;
 import org.apache.commons.cli.*;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -125,7 +126,7 @@ public class YouseeDigitvIngester {
         }
         DOMConfigurator.configure(pathToLog4jConfig);
         //From here on can assume there is a log4j configuration
-        Logger log = Logger.getLogger(YouseeDigitvIngester.class);
+        Logger log = LoggerFactory.getLogger(YouseeDigitvIngester.class);
         log.info("Loaded log4j configuration from " + log4jFile.getAbsolutePath());
 
         String pathToHibernateConfigFile = "";
@@ -190,7 +191,7 @@ public class YouseeDigitvIngester {
 
     private static String insertDataIntoDigitvDatabase(IngestContext context,
                                                        String pathToHibernateConfigFile) {
-        Logger log = Logger.getLogger(YouseeDigitvIngester.class);
+        Logger log = LoggerFactory.getLogger(YouseeDigitvIngester.class);
 
         String output;
 
